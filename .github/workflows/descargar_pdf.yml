@@ -1,0 +1,40 @@
+name: Auto-Descarga Quini 6
+
+on:
+  schedule:
+    - cron: '30 11 * * 1'  # Lunes 8:30 AM Argentina (11:30 UTC aprox)
+    - cron: '30 11 * * 4'  # Jueves 8:30 AM Argentina (11:30 UTC aprox)
+  workflow_dispatch:      # Permite ejecutarlo manualmente (botón Play)
+
+# Permisos necesarios para que el Bot pueda guardar el archivo en el repo
+permissions:
+  contents: write
+
+jobs:
+  descargar_y_guardar:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout del código
+        uses: actions/checkout@v4
+
+      - name: Configurar Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+
+      - name: Instalar Playwright
+        run: |
+          pip install playwright
+          playwright install --with-deps chromium
+
+      - name: Ejecutar Script de Descarga
+        run: python extracto_quini.py
+
+      # ESTA ES LA MAGIA: Detecta el PDF nuevo y lo sube al repositorio
+      - name: Guardar PDF en el Repositorio
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: "Actualización automática: Nuevo Extracto Quini 6"
+          file_pattern: 'extracto_quini_ultimo.pdf'
+          push_options: '--force'
