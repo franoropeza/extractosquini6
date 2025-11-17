@@ -12,7 +12,7 @@ def descargar_pdf_con_api_request():
         print(f"2. Navegando a la página principal...")
         
         try:
-            page.goto(url_resultados, timeout=20000, wait_until="load")
+            page.goto(url_resultados, timeout=60000, wait_until="domcontentloaded")
         except Exception as e:
             print(f"Error al cargar la página: {e}")
             browser.close()
@@ -80,3 +80,4 @@ def descargar_pdf_con_api_request():
 if __name__ == "__main__":
 
     descargar_pdf_con_api_request()
+
