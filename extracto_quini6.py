@@ -4,7 +4,7 @@ import time
 def descargar_pdf_con_api_request():
     with sync_playwright() as p:
         print("1. Iniciando navegador...")
-        browser = p.chromium.launch(headless=False)
+        browser = p.chromium.launch(headless=True)
         context = browser.new_context()
         page = context.new_page()
 
@@ -78,4 +78,5 @@ def descargar_pdf_con_api_request():
         browser.close()
 
 if __name__ == "__main__":
+
     descargar_pdf_con_api_request()
